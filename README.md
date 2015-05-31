@@ -5,5 +5,4 @@ Code Composer Written Speed Trap with LCD for the Launchpads for Model Railroadi
 
 ERRATA:::
 
-5/31/2015 - PLEASE NOTE:: The LCD shown on the schematic is backwards, reverse the pins of the LCD for the correct wiring until this
-schematic can be fixed
+
