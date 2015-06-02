@@ -3,7 +3,7 @@
 *
 * Provided under a Creative Commons Attribution, Non-Commercial Share Alike,3.0 Unported License
 *
-* COPYRIGHT 2013 - S.D. "Hoffy" Hofmeister, et al
+* COPYRIGHT 2015 - S.D. "Hoffy" Hofmeister, et al
 *************************************************************************************************
 * CREDITS:
 *
@@ -13,7 +13,7 @@
 *
 * LCD Library (lcdLib.h & lcdLib.c) The University of Texas at El Paso -
 * College of Engineering: http://www.ece.utep.edu/courses/web3376/Lab_5_-_LCD.html
-* Elliott Gurrola, Luis Carlos Bañuelos-Chacon, Elias N Jaquez
+* Elliott Gurrola, Luis Carlos BaÃ±uelos-Chacon, Elias N Jaquez
 *
 * This code is a group source project through The Launchpad for Model Railroading Project
 * - http://launchpad4mrr.blogspot.com/
@@ -98,7 +98,7 @@ lcdSetText("Version 1.2 LCD", 0,1);
 delay(200);
 lcdClear();
 lcdSetText("CC Licensed", 2, 0);
-lcdSetText("Copyright 2013 ", 1,1);
+lcdSetText("Copyright 2015 ", 1,1);
 delay(200);
 lcdClear();
 lcdSetText("S.D. Hofmeister,", 0, 0);
