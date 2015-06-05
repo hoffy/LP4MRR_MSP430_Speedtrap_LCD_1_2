@@ -1,7 +1,7 @@
 /*
-* IR Beam Detected Speed Trap (Single Track Version) Version 1.2 LCD Edition
+* IR Beam Detected Speed Trap (Single Track Version - Dual Direction) Version 1.3 LCD Edition
 *
-* Provided under a Creative Commons Attribution, Non-Commercial Share Alike,3.0 Unported License
+* Provided under a Creative Commons Attribution, Non-Commercial Share Alike,4.0 Unported License
 *
 * COPYRIGHT 2015 - S.D. "Hoffy" Hofmeister, et al
 *************************************************************************************************
@@ -13,7 +13,7 @@
 *
 * LCD Library (lcdLib.h & lcdLib.c) The University of Texas at El Paso -
 * College of Engineering: http://www.ece.utep.edu/courses/web3376/Lab_5_-_LCD.html
-* Elliott Gurrola, Luis Carlos BaÃ±uelos-Chacon, Elias N Jaquez
+* Elliott Gurrola, Luis Carlos Bañuelos-Chacon, Elias N Jaquez
 *
 * This code is a group source project through The Launchpad for Model Railroading Project
 * - http://launchpad4mrr.blogspot.com/
@@ -92,8 +92,8 @@ void main(void)
 lcdInit();// Initialize LCD
 
 //Credits on LCD
-lcdSetText("Speed Trap 1trak", 0, 0);
-lcdSetText("Version 1.2 LCD", 0,1);
+lcdSetText("Speed Trap Single", 0, 0);
+lcdSetText("Version 1.3 LCD", 0,1);
 //     ---->________________<---- Maximum 16 Character String Length
 delay(200);
 lcdClear();
@@ -142,38 +142,39 @@ lcdClear();
 while(1)                                  //Loop forever, we work with interrupts!
   {
 // Basically we loop here doing nothing until an IR Beam is triggered
-
+speed = 0;
+counter = 0;
 lcdSetText("Waiting for", 3, 0);
 lcdSetText("Train", 6, 1);
 
 		  if( (P1IN & BIT4) > 0 && lockgate_2 == 0)  // If Gate #1 is detecting an object and Gate #2 is not
-        	{
+        	{ lcdClear();
+   		      lcdSetText("Clocking Speed", 1, 0);
+   		      lcdSetText(" ", 0,1);
 			  do{
-			  	 lockgate_1 = 1; // Gate #1 Locked so that it will not interrupt
+			  	lockgate_1 = 1; // Gate #1 Locked so that it will not interrupt
 			  	P1OUT |= BIT0; // Turn on RED Indicator to show Gate #1 as locked
-			  	 lcdClear();
-        		 lcdSetText("Clocking Speed", 1, 0);
-        		 lcdSetText(" ", 0,1);
+
         		 counter_active = 1; // Start Counting from Gate #1 to Gate #2
   				 output_count = 1; 	// tell the rest of the program we counted
 			     }while ((P1IN & BIT5) == 0 && lockgate_1 == 1);  // Run the above code while Gate #2 is not detecting and Gate #1 is locked
-        	} else {lockgate_1 = 0; P1OUT &= ~BIT0;} // Otherwise unlock Gate #1 and turn off RED INDICATOR LED
+        	} else {lockgate_1 = 0; P1OUT &= ~BIT0; } // Otherwise unlock Gate #1 and turn off RED INDICATOR LED
 
 
 
           if( (P1IN & BIT5) > 0 && lockgate_1 == 0 ) // If Gate #2 is detecting an object and Gate #1 is not
-          {
+          { lcdClear();
+		    lcdSetText("Clocking Speed", 1, 0);
+		    lcdSetText(" ", 0,1);
         	  do {
         		  lockgate_2 = 1; // Gate #2 Locked so that it will not interrupt
         		  P1OUT |= BIT6; // Turn on GREEN Indicator to show Gate #2 as locked
-        		  lcdClear();
-        		  lcdSetText("Clocking Speed", 1, 0);
-        		  lcdSetText(" ", 0,1);
+
         		  counter_active = 1; // Start Counting from Gate #2 to Gate #1
         		  output_count = 1; 	// tell the rest of the program we counted
                	 }while ((P1IN & BIT4) == 0 && lockgate_2 == 1); // Run the above code while Gate #1 is not detecting and Gate #2 is locked
 
-          	}else {lockgate_2 = 0; P1OUT &= ~BIT6;} // Otherwise unlock Gate #2 and turn off GREEN INDICATOR LED
+          	}else {lockgate_2 = 0; P1OUT &= ~BIT6; } // Otherwise unlock Gate #2 and turn off GREEN INDICATOR LED
 
    counter_active = 0; 	// done counting - ready to output
 
@@ -185,7 +186,9 @@ lcdSetText("Train", 6, 1);
   			lcdSetInt(speed, 4, 1);
   			lcdSetText("MPH", 8,1);
   			delay(500);
+
   			output_count = 0;	// stop displaying and wait for another trigger
+
   			lcdClear();
 
   	} 	// end of IF
@@ -203,6 +206,7 @@ __interrupt void Timer_A (void)
 									// and we can't display it, so ...
 			counter = 0; 			// zero counter
 			counter_active = 0;		// stop counting
+
 			delay(1000);			// and hang for a bit
 			}
 	}// then return to main
